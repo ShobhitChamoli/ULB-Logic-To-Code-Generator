@@ -1,0 +1,27 @@
+{
+    "name": "universal-logic-bridge",
+    "version": "1.0.0",
+    "description": "A compiler-inspired system that converts structured pseudo-code to multiple programming languages",
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "cd backend && npm run dev",
+        "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+    },
+    "keywords": [
+        "compiler",
+        "code-generator",
+        "pseudo-code",
+        "education"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
