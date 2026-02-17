@@ -79,7 +79,7 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
             {/* Header */}
             <div className="p-4 border-b border-gray-700/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <FileCode className="w-5 h-5 text-purple-400" />
+                    <FileCode className="w-5 h-5 text-sky-400" />
                     <h2 className="text-lg font-semibold">Logic Editor</h2>
                 </div>
 

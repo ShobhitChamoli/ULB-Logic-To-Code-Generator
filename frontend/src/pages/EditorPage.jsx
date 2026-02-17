@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Home, Moon, Sun } from 'lucide-react'
+import { Home, Moon, Sun, BookOpen } from 'lucide-react'
 import LogicEditor from '../components/LogicEditor'
 import CodeOutput from '../components/CodeOutput'
 import AnalysisPanel from '../components/AnalysisPanel'
 import HistoryPanel from '../components/HistoryPanel'
+import SyntaxGuideModal from '../components/SyntaxGuideModal'
 
 function EditorPage() {
     const navigate = useNavigate()
@@ -18,6 +19,7 @@ function EditorPage() {
     const [isCompiling, setIsCompiling] = useState(false)
     const [showHistory, setShowHistory] = useState(false)
     const [showAnalysis, setShowAnalysis] = useState(true)
+    const [showSyntaxGuide, setShowSyntaxGuide] = useState(false)
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -63,12 +65,22 @@ function EditorPage() {
 
                         {/* Controls */}
                         <div className="flex items-center gap-3">
+                            {/* Syntax Guide Button */}
+                            <button
+                                onClick={() => setShowSyntaxGuide(true)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl ${theme === 'dark' ? 'bg-sky-500/20 hover:bg-sky-500/30 text-sky-300' : 'bg-blue-50 hover:bg-blue-100 text-blue-600'} transition-all duration-300 font-medium`}
+                                title="View Syntax Guide"
+                            >
+                                <BookOpen className="w-4 h-4" />
+                                <span className="hidden md:inline">Syntax Guide</span>
+                            </button>
+
                             {/* Mode Toggle */}
                             <button
                                 onClick={toggleMode}
                                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${mode === 'rule-based'
-                                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
-                                        : theme === 'dark' ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'
+                                    ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
+                                    : theme === 'dark' ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'
                                     }`}
                             >
                                 {mode === 'rule-based' ? '🔧 Rule-Based' : '🤖 AI-Based'}
@@ -176,6 +188,13 @@ function EditorPage() {
                     <span className="text-2xl">🔍</span>
                 </motion.button>
             </div>
+
+            {/* Syntax Guide Modal */}
+            <SyntaxGuideModal
+                isOpen={showSyntaxGuide}
+                onClose={() => setShowSyntaxGuide(false)}
+                theme={theme}
+            />
         </div>
     )
 }

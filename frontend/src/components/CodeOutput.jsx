@@ -123,7 +123,7 @@ export default function CodeOutput({
                     <motion.button
                         onClick={handleConvert}
                         disabled={isCompiling}
-                        className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 text-white font-medium text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-sky-500/50 transition-all"
                         whileHover={{ scale: isCompiling ? 1 : 1.05 }}
                         whileTap={{ scale: isCompiling ? 1 : 0.95 }}
                     >
