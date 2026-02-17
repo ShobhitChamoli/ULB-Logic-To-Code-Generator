@@ -1,237 +1,258 @@
 # Grammar Definition - Universal Logic Bridge
 
-## Formal Grammar in BNF Notation
+## Philosophy: Natural Language Logic
+
+This grammar supports **natural, beginner-friendly language** - not formal pseudocode. Users write like they're explaining to a friend, and the system converts it to code.
+
+## Supported Natural Phrases
 
 ### Program Structure
+```
+begin / start / BEGIN / START
+end / finish / END / FINISH
+```
+
+### Input/Output (Natural Language)
+```
+ask for [variable]
+get [variable]
+input [variable]
+read [variable]
+
+show [expression]
+display [expression]
+print [expression]
+output [expression]
+
+set [variable] to [value]
+make [variable] equal to [value]
+let [variable] = [value]
+[variable] = [value]
+```
+
+### Lists/Arrays (Natural Language)
+```
+create list [name] with [size] items
+make array [name] of size [size]
+create array [name]
+
+add [value] to [list] at position [index]
+put [value] in [list] at [index]
+set [list][index] to [value]
+
+get item [index] from [list]
+[list][index]
+```
+
+### Decisions (Natural Language)
+```
+if [condition] then
+    [statements]
+otherwise
+    [statements]
+end if
+
+if [condition]
+    [statements]
+else
+    [statements]
+endif
+```
+
+### Loops (Natural Language)
+```
+repeat [count] times
+    [statements]
+end repeat
+
+for each [item] in [list]
+    [statements]
+end for
+
+for [variable] from [start] to [end]
+    [statements]
+end for
+
+while [condition]
+    [statements]
+end while
+
+keep doing while [condition]
+    [statements]
+end
+```
+
+### Comparisons (Natural Language)
+```
+[x] is greater than [y]       →  x > y
+[x] is less than [y]          →  x < y
+[x] equals [y]                →  x == y
+[x] is equal to [y]           →  x == y
+[x] is not equal to [y]       →  x != y
+[x] is at least [y]           →  x >= y
+[x] is at most [y]            →  x <= y
+```
+
+### Math Operations (Natural Language)
+```
+add [x] and [y]               →  x + y
+[x] plus [y]                  →  x + y
+subtract [y] from [x]         →  x - y
+[x] minus [y]                 →  x - y
+multiply [x] by [y]           →  x * y
+[x] times [y]                 →  x * y
+divide [x] by [y]             →  x / y
+remainder of [x] divided by [y] → x % y
+```
+
+## Example: Natural Language → Code
+
+### Example 1: Find Largest Number (Natural Style)
+```
+begin
+ask for how many numbers
+create list numbers with n items
+
+for each position from 0 to n-1
+    ask for numbers[position]
+end for
+
+set largest to numbers[0]
+
+for each position from 1 to n-1
+    if numbers[position] is greater than largest then
+        set largest to numbers[position]
+    end if
+end for
+
+show "The largest number is:"
+show largest
+end
+```
+
+### Example 2: Sum of Array (Very Natural)
+```
+start
+get n
+make array nums of size n
+
+repeat n times with i
+    get nums[i]
+end repeat
+
+set total to 0
+for each i from 0 to n-1
+    add nums[i] to total
+end for
+
+display total
+finish
+```
+
+### Example 3: Even or Odd (Beginner Friendly)
+```
+begin
+ask for number
+set remainder to number % 2
+
+if remainder equals 0 then
+    show "Even"
+otherwise
+    show "Odd"
+end if
+end
+```
+
+## Formal BNF (For Parser Implementation)
+
+### Core Grammar
 ```bnf
-<program>      ::= "START" <statements> "END"
+<program>      ::= <start-keyword> <statements> <end-keyword>
+<start-keyword>::= "START" | "BEGIN" | "start" | "begin"
+<end-keyword>  ::= "END" | "FINISH" | "end" | "finish"
+
 <statements>   ::= <statement> | <statement> <statements>
 <statement>    ::= <input-stmt> 
-                 | <print-stmt> 
-                 | <assignment-stmt> 
-                 | <if-stmt> 
-                 | <while-stmt> 
-                 | <for-stmt>
-                 | <array-decl-stmt>
-                 | <function-decl-stmt>
-                 | <return-stmt>
-```
+                 | <output-stmt> 
+                 | <assignment-stmt>
+                 | <if-stmt>
+                 | <loop-stmt>
+                 | <array-stmt>
 
-### Statement Types
+<input-stmt>   ::= ("INPUT" | "ask for" | "get" | "read") <identifier>
 
-#### Input Statement
-```bnf
-<input-stmt>   ::= "INPUT" <identifier>
-```
+<output-stmt>  ::= ("PRINT" | "show" | "display" | "output") <expression>
 
-#### Print Statement
-```bnf
-<print-stmt>   ::= "PRINT" <expression>
-```
+<assignment-stmt> ::= ("SET" | "set" | "make" | "let") <identifier> 
+                      ("=" | "to" | "equal to") <expression>
+                   | <identifier> "=" <expression>
 
-#### Assignment Statement
-```bnf
-<assignment-stmt> ::= "SET" <identifier> "=" <expression>
-                    | "SET" <array-access> "=" <expression>
-```
+<array-stmt>   ::= ("create list" | "make array" | "ARRAY") <identifier> 
+                   ("with" | "of size") <expression> ("items" | "")
+                 | ("add" | "put" | "SET") <expression> 
+                   ("to" | "in") <identifier> "[" <expression> "]"
 
-#### Array Declaration Statement
-```bnf
-<array-decl-stmt> ::= "ARRAY" <identifier> "[" <expression> "]"
-                    | "ARRAY" <identifier> "=" "[" <expression-list> "]"
-<expression-list> ::= <expression> | <expression> "," <expression-list>
-```
+<if-stmt>      ::= "IF" <condition> "THEN" <statements> 
+                   ("ELSE" | "otherwise") <statements> "END IF"
 
-#### Conditional Statement
-```bnf
-<if-stmt>      ::= "IF" <expression> "THEN" <statements> <else-part> "END IF"
-<else-part>    ::= ε | "ELSE" <statements>
-```
+<loop-stmt>    ::= "FOR" <identifier> "=" <expression> "TO" <expression> 
+                   <statements> "END FOR"
+                 | "WHILE" <condition> "DO" <statements> "END WHILE"
+                 | "repeat" <expression> "times" <statements> "end repeat"
 
-#### While Loop
-```bnf
-<while-stmt>   ::= "WHILE" <expression> "DO" <statements> "END WHILE"
-```
+<condition>    ::= <expression> <comparison-op> <expression>
+                 | <expression> "is greater than" <expression>
+                 | <expression> "is less than" <expression>
+                 | <expression> "equals" <expression>
+                 | <expression> "is equal to" <expression>
 
-#### For Loop
-```bnf
-<for-stmt>     ::= "FOR" <identifier> "=" <expression> "TO" <expression> <statements> "END FOR"
-```
+<comparison-op>::= "==" | "!=" | "<" | ">" | "<=" | ">="
 
-#### Function Definition
-```bnf
-<function-decl-stmt> ::= "FUNCTION" <identifier> "(" <param-list> ")" <statements> "END FUNCTION"
-<param-list>   ::= ε | <identifier> | <identifier> "," <param-list>
-```
-
-#### Return Statement
-```bnf
-<return-stmt>  ::= "RETURN" <expression>
-```
-
-### Expressions
-
-```bnf
-<expression>   ::= <comparison>
-<comparison>   ::= <term> | <term> <comp-op> <term>
-<term>         ::= <factor> | <term> <add-op> <factor>
-<factor>       ::= <unary> | <factor> <mul-op> <unary>
-<unary>        ::= <primary> | "-" <unary>
-<primary>      ::= <number> 
-                 | <string> 
-                 | <identifier> 
-                 | <array-access>
-                 | <function-call>
-                 | "(" <expression> ")"
+<expression>   ::= <term> | <term> ("+" | "-") <expression>
+<term>         ::= <factor> | <factor> ("*" | "/" | "%") <term>
+<factor>       ::= <number> | <identifier> | <array-access> | "(" <expression> ")"
 <array-access> ::= <identifier> "[" <expression> "]"
-<function-call>::= <identifier> "(" <arg-list> ")"
-<arg-list>     ::= ε | <expression> | <expression> "," <arg-list>
 ```
 
-### Operators
+## Keywords (Case-Insensitive)
 
-```bnf
-<comp-op>      ::= "==" | "!=" | "<" | ">" | "<=" | ">="
-<add-op>       ::= "+" | "-"
-<mul-op>       ::= "*" | "/" | "%"
-```
+### Program Control
+- START, BEGIN, start, begin
+- END, FINISH, end, finish
 
-### Terminals
+### I/O Operations
+- INPUT, ask for, get, read
+- PRINT, show, display, output
+- SET, set, make, let
 
-```bnf
-<identifier>   ::= <letter> | <identifier> <letter> | <identifier> <digit> | <identifier> "_"
-<number>       ::= <digit> | <number> <digit> | <number> "." <digit>
-<string>       ::= '"' <char-sequence> '"' | "'" <char-sequence> "'"
-<letter>       ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z" | "_"
-<digit>        ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-```
+### Control Flow
+- IF, THEN, ELSE, otherwise, END IF, endif
+- FOR, TO, END FOR
+- WHILE, DO, END WHILE
+- repeat, times, end repeat
 
----
+### Arrays/Lists
+- ARRAY, create list, make array
+- add, put, get item
 
-## Operator Precedence (Highest to Lowest)
+### Comparisons
+- is greater than, is less than
+- equals, is equal to, is not equal to
+- is at least, is at most
 
-1.  **Parentheses**: `( )`
-2.  **Array Access**: `[ ]`
-3.  **Function Call**: `( )`
-4.  **Unary**: `-` (negation)
-5.  **Multiplicative**: `*`, `/`, `%`
-6.  **Additive**: `+`, `-`
-7.  **Comparison**: `==`, `!=`, `<`, `>`, `<=`, `>=`
+## Design Principles
 
----
+1. **Flexible Syntax**: Accept multiple ways to express the same thing
+2. **Case-Insensitive**: "START" = "start" = "Start"
+3. **Natural Phrases**: "ask for age" instead of "INPUT age"
+4. **Beginner-Friendly**: Write like explaining to a friend
+5. **Forgiving Parser**: Understand intent, not just exact syntax
 
-## Associativity
+## Implementation Notes
 
-- All binary operators are **left-associative**
-- Unary operators are **right-associative**
-- Array access and function calls are **left-associative**
-
----
-
-## Keywords (Reserved Words)
-
-```
-START, END, INPUT, PRINT, SET, IF, THEN, ELSE, END IF,
-WHILE, DO, END WHILE, FOR, TO, END FOR,
-ARRAY, FUNCTION, END FUNCTION, RETURN
-```
-
----
-
-## Example Parse Trees
-
-### Simple Assignment
-```
-SET x = 5
-```
-
-Parse Tree:
-```
-<assignment-stmt>
-    ├── SET
-    ├── <identifier> (x)
-    ├── =
-    └── <expression>
-        └── <primary>
-            └── <number> (5)
-```
-
-### If Statement
-```
-IF x > 5 THEN
-    PRINT x
-END IF
-```
-
-Parse Tree:
-```
-<if-stmt>
-    ├── IF
-    ├── <expression>
-    │   ├── <identifier> (x)
-    │   ├── >
-    │   └── <number> (5)
-    ├── THEN
-    ├── <statements>
-    │   └── <print-stmt>
-    │       ├── PRINT
-    │       └── <identifier> (x)
-    └── END IF
-```
-
-### Array Access and Assignment
-```
-SET arr[0] = 10
-```
-
-Parse Tree:
-```
-<assignment-stmt>
-    ├── SET
-    ├── <array-access>
-    │   ├── <identifier> (arr)
-    │   ├── [
-    │   ├── <expression>
-    │   │   └── <primary>
-    │   │       └── <number> (0)
-    │   └── ]
-    ├── =
-    └── <expression>
-        └── <primary>
-            └── <number> (10)
-```
-
-### Function Call
-```
-PRINT calculate(a, b)
-```
-
-Parse Tree:
-```
-<print-stmt>
-    ├── PRINT
-    └── <expression>
-        └── <primary>
-            └── <function-call>
-                ├── <identifier> (calculate)
-                ├── (
-                ├── <arg-list>
-                │   ├── <expression>
-                │   │   └── <primary>
-                │   │       └── <identifier> (a)
-                │   └── ,
-                │   └── <arg-list>
-                │       └── <expression>
-                │           └── <primary>
-                │               └── <identifier> (b)
-                └── )
-```
-
----
-
-## Grammar Properties
-
--   **LL(1)**: Can be parsed with one token lookahead (with careful design, though array access and function calls might require more lookahead or a different parsing strategy if not handled carefully in the lexer/parser).
--   **Unambiguous**: Each valid program has exactly one parse tree (requires careful construction, especially with new rules).
--   **Context-Free**: Can be recognized by a pushdown automaton
--   **Deterministic**: No backtracking required during parsing
+The parser should:
+- Normalize input (lowercase, trim whitespace)
+- Support synonym detection ("show" = "print" = "display")
+- Handle natural language comparisons
+- Convert to standard AST internally
+- Generate clean code in target language

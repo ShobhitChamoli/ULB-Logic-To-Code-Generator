@@ -55,22 +55,46 @@ export default function SyntaxGuideModal({ isOpen, onClose, theme }) {
                             {/* Input/Output */}
                             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-5 border-2 border-green-200">
                                 <h3 className="text-xl font-bold mb-3 text-green-700">💬 Talk to User</h3>
-                                <div className="space-y-2 text-sm">
-                                    <p className="text-gray-700"><code className="bg-white px-2 py-1 rounded text-green-600 font-semibold">INPUT age</code> - Ask user for age</p>
-                                    <p className="text-gray-700"><code className="bg-white px-2 py-1 rounded text-green-600 font-semibold">PRINT "Hello"</code> - Show message</p>
-                                    <p className="text-gray-700"><code className="bg-white px-2 py-1 rounded text-green-600 font-semibold">SET x = 10</code> - Remember a value</p>
+                                <div className="space-y-3 text-sm">
+                                    <div className="bg-white p-3 rounded-lg border border-green-200">
+                                        <p className="font-semibold text-green-600 mb-1">Ask for input:</p>
+                                        <code className="text-xs text-gray-600">INPUT age</code> or
+                                        <code className="text-xs text-blue-600 ml-2">ask for age</code> or
+                                        <code className="text-xs text-blue-600 ml-2">get age</code>
+                                    </div>
+                                    <div className="bg-white p-3 rounded-lg border border-green-200">
+                                        <p className="font-semibold text-green-600 mb-1">Show output:</p>
+                                        <code className="text-xs text-gray-600">PRINT "Hello"</code> or
+                                        <code className="text-xs text-blue-600 ml-2">show "Hello"</code> or
+                                        <code className="text-xs text-blue-600 ml-2">display "Hello"</code>
+                                    </div>
+                                    <div className="bg-white p-3 rounded-lg border border-green-200">
+                                        <p className="font-semibold text-green-600 mb-1">Save a value:</p>
+                                        <code className="text-xs text-gray-600">SET x = 10</code> or
+                                        <code className="text-xs text-blue-600 ml-2">set x to 10</code> or
+                                        <code className="text-xs text-blue-600 ml-2">make x equal to 10</code>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Decisions */}
                             <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-5 border-2 border-purple-200">
                                 <h3 className="text-xl font-bold mb-3 text-purple-700">🤔 Make Decisions</h3>
-                                <div className="bg-white rounded-lg p-4 border border-purple-200">
+                                <div className="bg-white rounded-lg p-4 border border-purple-200 mb-3">
+                                    <p className="text-xs font-semibold text-purple-600 mb-2">You can write:</p>
                                     <pre className="text-sm font-mono text-gray-800">{`IF age > 18 THEN
     PRINT "Adult"
 ELSE
     PRINT "Minor"
 END IF`}</pre>
+                                </div>
+                                <div className="bg-blue-50 rounded-lg p-4 border border-blue-300">
+                                    <p className="text-xs font-semibold text-blue-700 mb-2">Or write naturally:</p>
+                                    <pre className="text-sm font-mono text-blue-800">{`if age is greater than 18 then
+    show "Adult"
+otherwise
+    show "Minor"
+end if`}</pre>
                                 </div>
                             </div>
 
@@ -80,29 +104,42 @@ END IF`}</pre>
                                 <div className="space-y-3">
                                     <div className="bg-white rounded-lg p-4 border border-orange-200">
                                         <p className="text-xs font-semibold text-orange-600 mb-2">Count from 1 to 10:</p>
-                                        <pre className="text-sm font-mono text-gray-800">{`FOR i = 1 TO 10
+                                        <pre className="text-sm font-mono text-gray-800 mb-2">{`FOR i = 1 TO 10
     PRINT i
 END FOR`}</pre>
+                                        <p className="text-xs text-blue-600 font-semibold">Or naturally:</p>
+                                        <pre className="text-xs font-mono text-blue-700">{`for i from 1 to 10
+    show i
+end for`}</pre>
                                     </div>
                                     <div className="bg-white rounded-lg p-4 border border-orange-200">
                                         <p className="text-xs font-semibold text-orange-600 mb-2">Keep going until condition is false:</p>
-                                        <pre className="text-sm font-mono text-gray-800">{`WHILE x < 100 DO
+                                        <pre className="text-sm font-mono text-gray-800 mb-2">{`WHILE x < 100 DO
     SET x = x + 1
 END WHILE`}</pre>
+                                        <p className="text-xs text-blue-600 font-semibold">Or naturally:</p>
+                                        <pre className="text-xs font-mono text-blue-700">{`while x is less than 100
+    set x to x + 1
+end while`}</pre>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Arrays */}
                             <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl p-5 border-2 border-cyan-200">
-                                <h3 className="text-xl font-bold mb-3 text-cyan-700">📦 Store Multiple Values (Arrays)</h3>
+                                <h3 className="text-xl font-bold mb-3 text-cyan-700">📦 Store Multiple Values (Lists)</h3>
                                 <div className="space-y-3">
                                     <div className="bg-white rounded-lg p-4 border border-cyan-200">
                                         <p className="text-xs font-semibold text-cyan-600 mb-2">Create a list:</p>
-                                        <pre className="text-sm font-mono text-gray-800">{`ARRAY numbers[5]
+                                        <pre className="text-sm font-mono text-gray-800 mb-2">{`ARRAY numbers[5]
 SET numbers[0] = 10
 SET numbers[1] = 20
 PRINT numbers[0]`}</pre>
+                                        <p className="text-xs text-blue-600 font-semibold">Or naturally:</p>
+                                        <pre className="text-xs font-mono text-blue-700">{`create list numbers with 5 items
+set numbers[0] to 10
+set numbers[1] to 20
+show numbers[0]`}</pre>
                                     </div>
                                 </div>
                             </div>
