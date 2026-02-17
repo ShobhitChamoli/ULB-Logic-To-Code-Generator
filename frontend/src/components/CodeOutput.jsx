@@ -97,9 +97,9 @@ export default function CodeOutput({
     }
 
     return (
-        <div className={`h-full rounded-xl ${theme === 'dark' ? 'glass-dark' : 'glass'} overflow-hidden flex flex-col shadow-2xl`}>
+        <div className="h-full rounded-xl bg-white border border-gray-200 overflow-hidden flex flex-col shadow-lg">
             {/* Header */}
-            <div className="p-4 border-b border-gray-700/50 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
                 <div className="flex items-center gap-2">
                     <Code2 className="w-5 h-5 text-green-400" />
                     <h2 className="text-lg font-semibold">Generated Code</h2>
@@ -110,7 +110,7 @@ export default function CodeOutput({
                     <select
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
-                        className={`px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'} border ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} text-sm focus:outline-none focus:ring-2 focus:ring-green-500`}
+                        className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm"
                     >
                         {LANGUAGES.map(lang => (
                             <option key={lang.value} value={lang.value}>
@@ -161,11 +161,11 @@ export default function CodeOutput({
             </div>
 
             {/* Action Buttons */}
-            <div className="p-3 border-t border-gray-700/50 flex items-center justify-end gap-2">
+            <div className="p-3 border-t border-gray-200 flex items-center justify-end gap-2 bg-gray-50">
                 <motion.button
                     onClick={handleCopy}
                     disabled={!code}
-                    className={`px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'} text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-gray-50 text-gray-700"
                     whileHover={{ scale: code ? 1.05 : 1 }}
                     whileTap={{ scale: code ? 0.95 : 1 }}
                 >
@@ -176,7 +176,7 @@ export default function CodeOutput({
                 <motion.button
                     onClick={handleDownload}
                     disabled={!code}
-                    className={`px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'} text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-gray-50 text-gray-700"
                     whileHover={{ scale: code ? 1.05 : 1 }}
                     whileTap={{ scale: code ? 0.95 : 1 }}
                 >
@@ -187,7 +187,7 @@ export default function CodeOutput({
                 <motion.button
                     onClick={handleClear}
                     disabled={!code}
-                    className={`px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'} text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-red-400`}
+                    className="px-3 py-1.5 rounded-lg bg-white border border-red-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-red-50 text-red-600"
                     whileHover={{ scale: code ? 1.05 : 1 }}
                     whileTap={{ scale: code ? 0.95 : 1 }}
                 >

@@ -45,16 +45,16 @@ function EditorPage() {
     }
 
     return (
-        <div className={`min-h-screen ${theme === 'dark' ? 'gradient-bg' : 'gradient-bg-light'} transition-colors duration-300`}>
+        <div className="min-h-screen bg-[#E0F2FE] transition-colors duration-300">
             {/* Enhanced Navbar */}
-            <nav className={`${theme === 'dark' ? 'glass-dark' : 'glass'} sticky top-0 z-50 border-b ${theme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
+            <nav className="bg-white sticky top-0 z-50 border-b border-gray-200 shadow-md">
                 <div className="max-w-full px-6 py-4">
                     <div className="flex items-center justify-between">
                         {/* Logo & Home */}
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => navigate('/')}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl ${theme === 'dark' ? 'hover:bg-white/10' : 'hover:bg-black/5'} transition-all duration-300 group`}
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 shadow-sm transition-all duration-300"
                             >
                                 <Home className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                 <span className="font-semibold">Home</span>
@@ -68,7 +68,7 @@ function EditorPage() {
                             {/* Syntax Guide Button */}
                             <button
                                 onClick={() => setShowSyntaxGuide(true)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl ${theme === 'dark' ? 'bg-sky-500/20 hover:bg-sky-500/30 text-sky-300' : 'bg-blue-50 hover:bg-blue-100 text-blue-600'} transition-all duration-300 font-medium`}
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 shadow-sm text-blue-600 transition-all duration-300 font-medium"
                                 title="View Syntax Guide"
                             >
                                 <BookOpen className="w-4 h-4" />
@@ -79,8 +79,8 @@ function EditorPage() {
                             <button
                                 onClick={toggleMode}
                                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${mode === 'rule-based'
-                                    ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
-                                    : theme === 'dark' ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'
+                                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
+                                        : 'bg-white hover:bg-gray-50 border border-gray-200 shadow-sm'
                                     }`}
                             >
                                 {mode === 'rule-based' ? '🔧 Rule-Based' : '🤖 AI-Based'}
@@ -89,7 +89,7 @@ function EditorPage() {
                             {/* Theme Toggle */}
                             <button
                                 onClick={toggleTheme}
-                                className={`p-2 rounded-xl ${theme === 'dark' ? 'hover:bg-white/10' : 'hover:bg-black/5'} transition-all duration-300`}
+                                className="p-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 shadow-sm transition-all duration-300"
                             >
                                 {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                             </button>

@@ -75,9 +75,9 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
     const hasErrors = errors.length > 0
 
     return (
-        <div className={`h-full rounded-xl ${theme === 'dark' ? 'glass-dark' : 'glass'} overflow-hidden flex flex-col shadow-2xl`}>
+        <div className="h-full rounded-xl bg-white border border-gray-200 overflow-hidden flex flex-col shadow-lg">
             {/* Header */}
-            <div className="p-4 border-b border-gray-700/50 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
                 <div className="flex items-center gap-2">
                     <FileCode className="w-5 h-5 text-sky-400" />
                     <h2 className="text-lg font-semibold">Logic Editor</h2>
@@ -87,7 +87,7 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
                 <select
                     value={selectedTemplate}
                     onChange={handleTemplateChange}
-                    className={`px-3 py-1.5 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'} border ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                    className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm"
                 >
                     <option value="">Load Example...</option>
                     {EXAMPLE_TEMPLATES.map(template => (
@@ -142,16 +142,16 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
             )}
 
             {/* Syntax Guide */}
-            <div className="p-3 border-t border-gray-700/50 text-xs text-gray-400">
-                <p className="font-medium mb-1">Supported Syntax:</p>
+            <div className="p-3 border-t border-gray-200 text-xs text-gray-600 bg-gray-50">
+                <p className="font-medium mb-1 text-gray-700">Supported Syntax:</p>
                 <div className="flex flex-wrap gap-2">
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">START/END</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">INPUT var</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">SET var = expr</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">PRINT var</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">IF/ELSE/END IF</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">WHILE/END WHILE</code>
-                    <code className="px-2 py-0.5 bg-gray-800/50 rounded">FOR/END FOR</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">START/END</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">INPUT var</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">SET var = expr</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">PRINT var</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">IF/ELSE/END IF</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">WHILE/END WHILE</code>
+                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">FOR/END FOR</code>
                 </div>
             </div>
         </div>
