@@ -67,7 +67,7 @@ function EditorPage() {
                             <button
                                 onClick={toggleMode}
                                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${mode === 'rule-based'
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
                                         : theme === 'dark' ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'
                                     }`}
                             >

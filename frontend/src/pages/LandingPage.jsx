@@ -72,7 +72,7 @@ function LandingPage() {
                 {/* Floating Elements */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <motion.div
-                        className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"
+                        className="absolute top-20 left-10 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl"
                         animate={{
                             y: [0, 30, 0],
                             x: [0, 20, 0],
@@ -84,7 +84,7 @@ function LandingPage() {
                         }}
                     />
                     <motion.div
-                        className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl"
+                        className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
                         animate={{
                             y: [0, -40, 0],
                             x: [0, -30, 0],
@@ -118,7 +118,7 @@ function LandingPage() {
                     >
                         Universal Logic
                         <br />
-                        <span className="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-white via-sky-200 to-blue-200 bg-clip-text text-transparent">
                             Bridge
                         </span>
                     </motion.h1>
@@ -127,11 +127,11 @@ function LandingPage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-xl md:text-2xl text-purple-100 mb-12 max-w-3xl mx-auto font-light"
+                        className="text-xl md:text-2xl text-sky-100 mb-12 max-w-3xl mx-auto font-light"
                     >
-                        Transform your structured pseudo-code into production-ready code across multiple programming languages.
+                        Write complex algorithms and logic in simple pseudo-code. Generate production-ready code in Python, C++, Java, C, and JavaScript.
                         <br />
-                        <span className="text-white/80">Lexical → Syntax → Semantic → Code Generation</span>
+                        <span className="text-white/90 font-medium">From LeetCode-style problems to production code</span>
                     </motion.p>
 
                     <motion.div
@@ -142,7 +142,7 @@ function LandingPage() {
                     >
                         <button
                             onClick={() => navigate('/editor')}
-                            className="group relative px-8 py-4 bg-white text-purple-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                            className="group relative px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-sky-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
                         >
                             Launch Editor
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -166,9 +166,9 @@ function LandingPage() {
                             <div className="w-3 h-3 rounded-full bg-red-400"></div>
                             <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                             <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                            <span className="ml-4 text-sm text-purple-200">example.logic</span>
+                            <span className="ml-4 text-sm text-sky-200">example.logic</span>
                         </div>
-                        <pre className="text-sm md:text-base font-mono text-purple-100 leading-relaxed">
+                        <pre className="text-sm md:text-base font-mono text-sky-100 leading-relaxed">
                             <code>{`START
 INPUT n
 SET factorial = 1
@@ -195,8 +195,8 @@ END`}</code>
                         <h2 className="text-5xl md:text-6xl font-black mb-6">
                             Powerful Features
                         </h2>
-                        <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-                            Everything you need to convert logic into code with professional compiler design principles
+                        <p className="text-xl text-sky-100 max-w-2xl mx-auto">
+                            Professional compiler-based code generation for complex algorithms and data structures
                         </p>
                     </motion.div>
 
@@ -211,11 +211,11 @@ END`}</code>
                                 whileHover={{ y: -10, scale: 1.02 }}
                                 className="glass-strong rounded-3xl p-8 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 group"
                             >
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                                     {feature.icon}
                                 </div>
                                 <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
-                                <p className="text-purple-100 leading-relaxed">{feature.description}</p>
+                                <p className="text-sky-100 leading-relaxed">{feature.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -235,8 +235,8 @@ END`}</code>
                         <h2 className="text-5xl md:text-6xl font-black mb-6">
                             How It Works
                         </h2>
-                        <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-                            Four simple steps from logic to production-ready code
+                        <p className="text-xl text-sky-100 max-w-2xl mx-auto">
+                            Professional compiler pipeline: from algorithm design to executable code
                         </p>
                     </motion.div>
 
@@ -252,16 +252,16 @@ END`}</code>
                             >
                                 {/* Connector Line */}
                                 {index < steps.length - 1 && (
-                                    <div className="hidden lg:block absolute top-24 left-full w-full h-0.5 bg-gradient-to-r from-purple-400 to-transparent -z-10" />
+                                    <div className="hidden lg:block absolute top-24 left-full w-full h-0.5 bg-gradient-to-r from-sky-400 to-transparent -z-10" />
                                 )}
 
                                 <div className="glass-strong rounded-3xl p-8 text-center hover:scale-105 transition-transform duration-300">
                                     <div className="text-6xl font-black text-white/20 mb-4">{step.number}</div>
-                                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center mx-auto mb-6">
+                                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-500 flex items-center justify-center mx-auto mb-6">
                                         {step.icon}
                                     </div>
                                     <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
-                                    <p className="text-purple-100 leading-relaxed">{step.description}</p>
+                                    <p className="text-sky-100 leading-relaxed">{step.description}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -282,12 +282,12 @@ END`}</code>
                         <h2 className="text-5xl md:text-6xl font-black mb-6">
                             Ready to Bridge the Gap?
                         </h2>
-                        <p className="text-xl text-purple-100 mb-10">
-                            Start converting your logic to code in seconds
+                        <p className="text-xl text-sky-100 mb-10">
+                            Start solving complex coding problems with professional code generation
                         </p>
                         <button
                             onClick={() => navigate('/editor')}
-                            className="group px-10 py-5 bg-white text-purple-600 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
+                            className="group px-10 py-5 bg-white text-blue-600 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-sky-500/50 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
                         >
                             Get Started Now
                             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
@@ -299,10 +299,10 @@ END`}</code>
             {/* Footer */}
             <footer className="relative py-12 px-6 border-t border-white/10">
                 <div className="max-w-7xl mx-auto text-center">
-                    <p className="text-purple-100 mb-2">
-                        Universal Logic Bridge - Bridging the gap between logic and code 🌉
+                    <p className="text-sky-100 mb-2">
+                        Universal Logic Bridge - Professional code generation for complex algorithms 💻
                     </p>
-                    <p className="text-purple-200/60 text-sm">
+                    <p className="text-sky-200/60 text-sm">
                         Built with compiler design principles • Lexical → Syntax → Semantic → Code Generation
                     </p>
                 </div>
