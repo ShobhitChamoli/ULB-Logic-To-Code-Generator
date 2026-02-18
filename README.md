@@ -11,7 +11,7 @@ A full-stack compiler design project that converts structured pseudo-code into m
 ### Key Features
 
 ✅ **Full Compiler Pipeline**: Lexical → Syntax → Semantic → Code Generation  
-✅ **5 Target Languages**: Python, C++, Java, C, JavaScript  
+✅ **5 Target Languages**: Python, C++, Java, C, JavaScript  (add more in future)
 ✅ **Real-time Analysis**: Token table, AST viewer, Symbol table  
 ✅ **Premium UI**: Glassmorphism design with smooth animations  
 ✅ **Monaco Editor**: Professional code editing experience  
