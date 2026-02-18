@@ -1,9 +1,11 @@
 /**
  * Compilation Routes
  * API endpoints for code compilation
+ * Pipeline: Preprocessor → Lexer → Parser → SemanticAnalyzer → CodeGenerator
  */
 
 import express from 'express'
+import NaturalLanguagePreprocessor from '../preprocessor/NaturalLanguagePreprocessor.js'
 import Lexer from '../lexer/Lexer.js'
 import Parser from '../parser/Parser.js'
 import SemanticAnalyzer from '../semantic/SemanticAnalyzer.js'
@@ -26,8 +28,12 @@ router.post('/compile', (req, res) => {
             })
         }
 
+        // Phase 0: Natural Language Preprocessing (case-insensitive + natural phrases)
+        const preprocessor = new NaturalLanguagePreprocessor(code)
+        const normalizedCode = preprocessor.process()
+
         // Phase 1: Lexical Analysis
-        const lexer = new Lexer(code)
+        const lexer = new Lexer(normalizedCode)
         const tokens = lexer.tokenize()
 
         // Phase 2: Syntax Analysis
@@ -38,7 +44,8 @@ router.post('/compile', (req, res) => {
             return res.json({
                 success: false,
                 errors: parseErrors,
-                tokens: tokens
+                tokens: tokens,
+                normalizedCode: normalizedCode
             })
         }
 
@@ -52,7 +59,8 @@ router.post('/compile', (req, res) => {
                 errors: semanticErrors,
                 tokens: tokens,
                 ast: ast,
-                symbolTable: symbolTable
+                symbolTable: symbolTable,
+                normalizedCode: normalizedCode
             })
         }
 
@@ -90,6 +98,7 @@ router.post('/compile', (req, res) => {
             tokens: tokens,
             ast: ast,
             symbolTable: symbolTable,
+            normalizedCode: normalizedCode,
             errors: []
         })
 

@@ -1,19 +1,55 @@
 /**
  * Lexical Analyzer (Tokenizer)
  * Converts source code into a stream of tokens
+ * Supports all data structure keywords and operations
  */
 
 const KEYWORDS = [
-    'START', 'END', 'INPUT', 'PRINT', 'SET',
+    // Program structure
+    'START', 'END',
+    // I/O
+    'INPUT', 'PRINT', 'SET',
+    // Control flow
     'IF', 'THEN', 'ELSE', 'END IF',
     'WHILE', 'DO', 'END WHILE',
-    'FOR', 'TO', 'END FOR'
+    'FOR', 'TO', 'END FOR',
+    // Array
+    'ARRAY',
+    // Stack
+    'STACK', 'PUSH', 'POP', 'TOP',
+    // Queue
+    'QUEUE', 'ENQUEUE', 'DEQUEUE', 'FRONT',
+    // Map / Dictionary
+    'MAP', 'MAP_INSERT', 'MAP_GET', 'MAP_REMOVE',
+    // Set
+    'SET_DS', 'SET_ADD', 'SET_REMOVE', 'CONTAINS',
+    // Vector
+    'VECTOR', 'VECTOR_PUSH', 'VECTOR_POP',
+    // Linked List
+    'LINKED_LIST', 'LL_PUSH_FRONT', 'LL_PUSH_BACK', 'LL_POP_FRONT', 'LL_POP_BACK',
+    // Tree (BST)
+    'TREE', 'TREE_INSERT',
+    // Graph
+    'GRAPH', 'GRAPH_ADD_EDGE',
+    // Common operations
+    'SIZE', 'EMPTY',
+    // Pair
+    'PAIR', 'PAIR_FIRST', 'PAIR_SECOND',
+    // Priority Queue
+    'PRIORITY_QUEUE',
+    // Deque
+    'DEQUE', 'DEQUE_PUSH_FRONT', 'DEQUE_PUSH_BACK', 'DEQUE_POP_FRONT', 'DEQUE_POP_BACK',
+    // Struct
+    'STRUCT'
 ]
+
+// Sort keywords by length (longest first) to match multi-word keywords before shorter ones
+const SORTED_KEYWORDS = [...KEYWORDS].sort((a, b) => b.length - a.length)
 
 const OPERATORS = [
     '+', '-', '*', '/', '%',
     '==', '!=', '<', '>', '<=', '>=',
-    '=', '(', ')', ','
+    '=', '(', ')', ',', '[', ']'
 ]
 
 export default class Lexer {
@@ -49,33 +85,16 @@ export default class Lexer {
                 continue
             }
 
-            // Check for multi-character keywords
+            // Check for multi-word keywords (sorted longest first)
             let matched = false
-
-            // Check for END IF, END WHILE, END FOR
-            if (line.substring(i).startsWith('END IF')) {
-                this.addToken('KEYWORD', 'END IF', this.currentLine)
-                i += 6
-                matched = true
-            } else if (line.substring(i).startsWith('END WHILE')) {
-                this.addToken('KEYWORD', 'END WHILE', this.currentLine)
-                i += 9
-                matched = true
-            } else if (line.substring(i).startsWith('END FOR')) {
-                this.addToken('KEYWORD', 'END FOR', this.currentLine)
-                i += 7
-                matched = true
-            } else {
-                // Check for single keywords
-                for (const keyword of KEYWORDS) {
-                    if (line.substring(i).startsWith(keyword)) {
-                        const nextChar = line[i + keyword.length]
-                        if (!nextChar || /\s/.test(nextChar)) {
-                            this.addToken('KEYWORD', keyword, this.currentLine)
-                            i += keyword.length
-                            matched = true
-                            break
-                        }
+            for (const keyword of SORTED_KEYWORDS) {
+                if (line.substring(i).startsWith(keyword)) {
+                    const nextChar = line[i + keyword.length]
+                    if (!nextChar || /[\s\[\](,]/.test(nextChar)) {
+                        this.addToken('KEYWORD', keyword, this.currentLine)
+                        i += keyword.length
+                        matched = true
+                        break
                     }
                 }
             }
@@ -134,7 +153,7 @@ export default class Lexer {
                 continue
             }
 
-            // Unknown character
+            // Unknown character - skip
             i++
         }
     }

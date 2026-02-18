@@ -1,6 +1,8 @@
 /**
  * Syntax Analyzer (Parser)
  * Builds Abstract Syntax Tree (AST) from tokens
+ * Supports all data structures: stack, queue, map, set, vector,
+ * linked list, tree, graph, pair, priority queue, deque, struct, array
  */
 
 export default class Parser {
@@ -58,25 +60,95 @@ export default class Parser {
 
         if (token.type === 'KEYWORD') {
             switch (token.value) {
-                case 'INPUT':
-                    return this.parseInput()
-                case 'PRINT':
-                    return this.parsePrint()
-                case 'SET':
-                    return this.parseAssignment()
-                case 'IF':
-                    return this.parseIf()
-                case 'WHILE':
-                    return this.parseWhile()
-                case 'FOR':
-                    return this.parseFor()
+                // ── Core ──
+                case 'INPUT': return this.parseInput()
+                case 'PRINT': return this.parsePrint()
+                case 'SET': return this.parseAssignment()
+                case 'IF': return this.parseIf()
+                case 'WHILE': return this.parseWhile()
+                case 'FOR': return this.parseFor()
+                case 'ARRAY': return this.parseArray()
+
+                // ── Stack ──
+                case 'STACK': return this.parseCreateDS('StackCreate', 'stack')
+                case 'PUSH': return this.parseDSOperation('StackPush', 2)
+                case 'POP': return this.parseDSOperation('StackPop', 1)
+                case 'TOP': return this.parseDSOperation('StackTop', 1)
+
+                // ── Queue ──
+                case 'QUEUE': return this.parseCreateDS('QueueCreate', 'queue')
+                case 'ENQUEUE': return this.parseDSOperation('QueueEnqueue', 2)
+                case 'DEQUEUE': return this.parseDSOperation('QueueDequeue', 1)
+                case 'FRONT': return this.parseDSOperation('QueueFront', 1)
+
+                // ── Map ──
+                case 'MAP': return this.parseCreateDS('MapCreate', 'map')
+                case 'MAP_INSERT': return this.parseDSOperation('MapInsert', 3)
+                case 'MAP_GET': return this.parseDSOperation('MapGet', 2)
+                case 'MAP_REMOVE': return this.parseDSOperation('MapRemove', 2)
+
+                // ── Set ──
+                case 'SET_DS': return this.parseCreateDS('SetCreate', 'set')
+                case 'SET_ADD': return this.parseDSOperation('SetAdd', 2)
+                case 'SET_REMOVE': return this.parseDSOperation('SetRemove', 2)
+                case 'CONTAINS': return this.parseDSOperation('Contains', 2)
+
+                // ── Vector ──
+                case 'VECTOR': return this.parseCreateDS('VectorCreate', 'vector')
+                case 'VECTOR_PUSH': return this.parseDSOperation('VectorPush', 2)
+                case 'VECTOR_POP': return this.parseDSOperation('VectorPop', 1)
+
+                // ── Linked List ──
+                case 'LINKED_LIST': return this.parseCreateDS('LinkedListCreate', 'linked_list')
+                case 'LL_PUSH_FRONT': return this.parseDSOperation('LLPushFront', 2)
+                case 'LL_PUSH_BACK': return this.parseDSOperation('LLPushBack', 2)
+                case 'LL_POP_FRONT': return this.parseDSOperation('LLPopFront', 1)
+                case 'LL_POP_BACK': return this.parseDSOperation('LLPopBack', 1)
+
+                // ── Tree ──
+                case 'TREE': return this.parseCreateDS('TreeCreate', 'tree')
+                case 'TREE_INSERT': return this.parseDSOperation('TreeInsert', 2)
+
+                // ── Graph ──
+                case 'GRAPH': return this.parseGraphCreate()
+                case 'GRAPH_ADD_EDGE': return this.parseDSOperation('GraphAddEdge', 3)
+
+                // ── Common ──
+                case 'SIZE': return this.parseDSOperation('Size', 1)
+                case 'EMPTY': return this.parseDSOperation('Empty', 1)
+
+                // ── Pair ──
+                case 'PAIR': return this.parsePairCreate()
+                case 'PAIR_FIRST': return this.parseDSOperation('PairFirst', 1)
+                case 'PAIR_SECOND': return this.parseDSOperation('PairSecond', 1)
+
+                // ── Priority Queue ──
+                case 'PRIORITY_QUEUE': return this.parseCreateDS('PriorityQueueCreate', 'priority_queue')
+
+                // ── Deque ──
+                case 'DEQUE': return this.parseCreateDS('DequeCreate', 'deque')
+                case 'DEQUE_PUSH_FRONT': return this.parseDSOperation('DequePushFront', 2)
+                case 'DEQUE_PUSH_BACK': return this.parseDSOperation('DequePushBack', 2)
+                case 'DEQUE_POP_FRONT': return this.parseDSOperation('DequePopFront', 1)
+                case 'DEQUE_POP_BACK': return this.parseDSOperation('DequePopBack', 1)
+
+                // ── Struct ──
+                case 'STRUCT': return this.parseStructCreate()
+
                 default:
                     throw new Error(`Unexpected keyword: ${token.value}`)
             }
         }
 
+        // Handle identifier-based assignment (x = expr)
+        if (token.type === 'IDENTIFIER') {
+            return this.parseIdentifierStatement()
+        }
+
         throw new Error(`Unexpected token: ${token.value}`)
     }
+
+    // ─── Core Statement Parsers ─────────────────────────────────────────────────
 
     parseInput() {
         this.advance() // consume INPUT
@@ -103,6 +175,22 @@ export default class Parser {
     parseAssignment() {
         this.advance() // consume SET
         const identifier = this.consume('IDENTIFIER', 'Expected variable name after SET')
+
+        // Handle array element assignment: SET arr[i] = value
+        if (this.matchOperator(['['])) {
+            const index = this.parseExpression()
+            this.consume('OPERATOR', 'Expected ]', ']')
+            this.consume('OPERATOR', 'Expected = after variable', '=')
+            const expr = this.parseExpression()
+            return {
+                type: 'ArraySetStatement',
+                array: identifier.value,
+                index: index,
+                expression: expr,
+                line: identifier.line
+            }
+        }
+
         this.consume('OPERATOR', 'Expected = after variable name', '=')
         const expr = this.parseExpression()
 
@@ -112,6 +200,20 @@ export default class Parser {
             expression: expr,
             line: identifier.line
         }
+    }
+
+    parseIdentifierStatement() {
+        const identifier = this.advance()
+        if (this.matchOperator(['='])) {
+            const expr = this.parseExpression()
+            return {
+                type: 'AssignmentStatement',
+                variable: identifier.value,
+                expression: expr,
+                line: identifier.line
+            }
+        }
+        throw new Error(`Unexpected identifier: ${identifier.value}`)
     }
 
     parseIf() {
@@ -190,6 +292,130 @@ export default class Parser {
             line
         }
     }
+
+    // ─── Array ──────────────────────────────────────────────────────────────────
+
+    parseArray() {
+        const line = this.peek().line
+        this.advance() // consume ARRAY
+        const name = this.consume('IDENTIFIER', 'Expected array name').value
+
+        // Check for [size] syntax
+        let size = null
+        if (this.matchOperator(['['])) {
+            size = this.parseExpression()
+            this.consume('OPERATOR', 'Expected ]', ']')
+        } else {
+            // size might be next token
+            size = this.parseExpression()
+        }
+
+        return {
+            type: 'ArrayCreate',
+            name,
+            size,
+            line
+        }
+    }
+
+    // ─── Generic Data Structure Parsers ─────────────────────────────────────────
+
+    parseCreateDS(nodeType, dsType) {
+        const line = this.peek().line
+        this.advance() // consume the keyword
+        const name = this.consume('IDENTIFIER', `Expected ${dsType} name`).value
+
+        return {
+            type: nodeType,
+            name,
+            dsType,
+            line
+        }
+    }
+
+    parseDSOperation(nodeType, argCount) {
+        const line = this.peek().line
+        this.advance() // consume the keyword
+
+        const args = []
+        for (let i = 0; i < argCount; i++) {
+            if (this.peek()?.type === 'IDENTIFIER' || this.peek()?.type === 'NUMBER' || this.peek()?.type === 'STRING') {
+                args.push(this.advance().value)
+            } else {
+                args.push(this.parseExpression())
+            }
+        }
+
+        return {
+            type: nodeType,
+            args,
+            line
+        }
+    }
+
+    // ─── Special Data Structure Parsers ─────────────────────────────────────────
+
+    parseGraphCreate() {
+        const line = this.peek().line
+        this.advance() // consume GRAPH
+        const name = this.consume('IDENTIFIER', 'Expected graph name').value
+        let nodeCount = null
+        if (!this.isAtEnd() && (this.peek()?.type === 'NUMBER' || this.peek()?.type === 'IDENTIFIER')) {
+            nodeCount = this.advance().value
+        }
+
+        return {
+            type: 'GraphCreate',
+            name,
+            nodeCount,
+            dsType: 'graph',
+            line
+        }
+    }
+
+    parsePairCreate() {
+        const line = this.peek().line
+        this.advance() // consume PAIR
+        const name = this.consume('IDENTIFIER', 'Expected pair name').value
+
+        let first = null, second = null
+        if (!this.isAtEnd() && (this.peek()?.type === 'NUMBER' || this.peek()?.type === 'IDENTIFIER')) {
+            first = this.advance().value
+        }
+        if (!this.isAtEnd() && (this.peek()?.type === 'NUMBER' || this.peek()?.type === 'IDENTIFIER')) {
+            second = this.advance().value
+        }
+
+        return {
+            type: 'PairCreate',
+            name,
+            first,
+            second,
+            dsType: 'pair',
+            line
+        }
+    }
+
+    parseStructCreate() {
+        const line = this.peek().line
+        this.advance() // consume STRUCT
+        const name = this.consume('IDENTIFIER', 'Expected struct name').value
+
+        const fields = []
+        while (!this.isAtEnd() && this.peek()?.type === 'IDENTIFIER') {
+            fields.push(this.advance().value)
+        }
+
+        return {
+            type: 'StructCreate',
+            name,
+            fields,
+            dsType: 'struct',
+            line
+        }
+    }
+
+    // ─── Expression Parsers ─────────────────────────────────────────────────────
 
     parseExpression() {
         return this.parseComparison()
@@ -270,7 +496,16 @@ export default class Parser {
         }
 
         if (this.match('IDENTIFIER')) {
-            return { type: 'Identifier', name: this.previous().value }
+            const name = this.previous().value
+
+            // Check for array access: identifier[expr]
+            if (this.matchOperator(['['])) {
+                const index = this.parseExpression()
+                this.consume('OPERATOR', 'Expected ]', ']')
+                return { type: 'ArrayAccess', name, index }
+            }
+
+            return { type: 'Identifier', name }
         }
 
         if (this.matchOperator(['('])) {
@@ -279,10 +514,32 @@ export default class Parser {
             return expr
         }
 
+        // DS query keywords used as expressions (e.g., PRINT TOP s, SET x = SIZE myStack)
+        const dsQueryKeywords = {
+            'TOP': 1, 'FRONT': 1, 'SIZE': 1, 'EMPTY': 1,
+            'PAIR_FIRST': 1, 'PAIR_SECOND': 1,
+            'MAP_GET': 2, 'CONTAINS': 2
+        }
+
+        if (this.check('KEYWORD') && this.peek().value in dsQueryKeywords) {
+            const keyword = this.advance().value
+            const argCount = dsQueryKeywords[keyword]
+            const args = []
+            for (let i = 0; i < argCount; i++) {
+                if (this.peek()?.type === 'IDENTIFIER' || this.peek()?.type === 'NUMBER' || this.peek()?.type === 'STRING') {
+                    args.push(this.advance().value)
+                } else {
+                    args.push(this.parseExpression())
+                }
+            }
+            return { type: 'DSQueryExpression', operation: keyword, args }
+        }
+
         throw new Error(`Unexpected token: ${this.peek()?.value || 'EOF'}`)
     }
 
-    // Helper methods
+    // ─── Helper Methods ─────────────────────────────────────────────────────────
+
     match(type, value = null) {
         if (this.check(type, value)) {
             this.advance()
@@ -336,7 +593,10 @@ export default class Parser {
         while (!this.isAtEnd()) {
             const token = this.peek()
             if (token.type === 'KEYWORD' &&
-                ['INPUT', 'PRINT', 'SET', 'IF', 'WHILE', 'FOR', 'END'].includes(token.value)) {
+                ['INPUT', 'PRINT', 'SET', 'IF', 'WHILE', 'FOR', 'END',
+                    'STACK', 'QUEUE', 'MAP', 'VECTOR', 'LINKED_LIST', 'TREE', 'GRAPH',
+                    'PUSH', 'POP', 'ENQUEUE', 'DEQUEUE', 'ARRAY',
+                    'SET_DS', 'PAIR', 'PRIORITY_QUEUE', 'DEQUE', 'STRUCT'].includes(token.value)) {
                 return
             }
             this.advance()
