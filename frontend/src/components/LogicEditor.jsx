@@ -184,22 +184,49 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
             {/* Error Display */}
             {hasErrors && (
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 bg-red-500/10 border-t border-red-500/30"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="border-t-2 border-red-500"
                 >
-                    <div className="flex items-start gap-2">
-                        <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
-                        <div className="flex-1">
-                            <p className="text-sm font-medium text-red-400 mb-1">Compilation Errors:</p>
-                            <div className="space-y-1">
-                                {errors.map((error, idx) => (
-                                    <p key={idx} className="text-xs text-red-300">
-                                        Line {error.line}: {error.message}
-                                    </p>
-                                ))}
-                            </div>
+                    {/* Error Header */}
+                    <div className="flex items-center justify-between px-5 py-3 bg-red-50 border-b border-red-200">
+                        <div className="flex items-center gap-3">
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </span>
+                            <AlertCircle className="w-5 h-5 text-red-600" />
+                            <h3 className="text-base font-bold text-red-700">Compilation Errors</h3>
                         </div>
+                        <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold bg-red-600 text-white shadow-sm">
+                            {errors.length} {errors.length === 1 ? 'error' : 'errors'}
+                        </span>
+                    </div>
+
+                    {/* Error List */}
+                    <div className="max-h-48 overflow-y-auto bg-red-50/50 p-4 space-y-3">
+                        {errors.map((error, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-200 shadow-sm"
+                            >
+                                <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-md bg-red-100 text-red-700 text-xs font-bold border border-red-200">
+                                    {error.line || '—'}
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                    {error.line > 0 && (
+                                        <p className="text-xs font-semibold text-red-500 mb-0.5">Line {error.line}</p>
+                                    )}
+                                    <p className="text-sm text-red-800 font-medium leading-snug break-words">
+                                        {error.message}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </motion.div>
             )}
