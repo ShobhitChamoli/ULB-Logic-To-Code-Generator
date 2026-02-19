@@ -135,6 +135,7 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
     }
 
     const errors = compilationData?.errors || []
+    console.log('LogicEditor errors:', errors)
     const hasErrors = errors.length > 0
 
     return (
@@ -162,7 +163,7 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
             </div>
 
             {/* Editor */}
-            <div className="flex-1 relative">
+            <div className="flex-1 relative min-h-0">
                 <Editor
                     height="100%"
                     defaultLanguage="plaintext"
