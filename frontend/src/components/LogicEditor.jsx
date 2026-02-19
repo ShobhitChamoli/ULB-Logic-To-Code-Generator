@@ -187,10 +187,10 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="border-t-2 border-red-500"
+                    className="border-t-2 border-red-500 max-h-[300px] flex flex-col overflow-hidden shadow-md"
                 >
                     {/* Error Header */}
-                    <div className="flex items-center justify-between px-5 py-3 bg-red-50 border-b border-red-200">
+                    <div className="flex-shrink-0 flex items-center justify-between px-5 py-3 bg-red-50 border-b border-red-200 sticky top-0 z-10">
                         <div className="flex items-center gap-3">
                             <span className="relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -205,14 +205,14 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
                     </div>
 
                     {/* Error List */}
-                    <div className="max-h-48 overflow-y-auto bg-red-50/50 p-4 space-y-3">
+                    <div className="flex-1 overflow-y-auto bg-red-50/50 p-4 space-y-3">
                         {errors.map((error, idx) => (
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.05 }}
-                                className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-200 shadow-sm"
+                                className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-200 shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-md bg-red-100 text-red-700 text-xs font-bold border border-red-200">
                                     {error.line || '—'}
