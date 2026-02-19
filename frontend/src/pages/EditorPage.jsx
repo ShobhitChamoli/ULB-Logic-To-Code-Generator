@@ -79,8 +79,8 @@ function EditorPage() {
                             <button
                                 onClick={toggleMode}
                                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${mode === 'rule-based'
-                                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
-                                        : 'bg-white hover:bg-gray-50 border border-gray-200 shadow-sm'
+                                    ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg'
+                                    : 'bg-white hover:bg-gray-50 border border-gray-200 shadow-sm'
                                     }`}
                             >
                                 {mode === 'rule-based' ? '🔧 Rule-Based' : '🤖 AI-Based'}
@@ -98,73 +98,71 @@ function EditorPage() {
                 </div>
             </nav>
 
-            {/* Main Editor Area */}
-            <div className="flex h-[calc(100vh-73px)]">
-                {/* Left Panel - Logic Editor */}
-                <motion.div
-                    className="flex-1 p-6"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <LogicEditor
-                        code={logicCode}
-                        setCode={setLogicCode}
-                        theme={theme}
-                        compilationData={compilationData}
-                    />
-                </motion.div>
+            {/* Main Content Area */}
+            <div className="flex flex-col h-[calc(100vh-73px)] overflow-hidden">
+                {/* Editors Split View */}
+                <div className="flex flex-1 min-h-0 relative">
+                    {/* Left Panel - Logic Editor */}
+                    <motion.div
+                        className="flex-1 p-6 h-full overflow-hidden"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <LogicEditor
+                            code={logicCode}
+                            setCode={setLogicCode}
+                            theme={theme}
+                            compilationData={compilationData}
+                        />
+                    </motion.div>
 
-                {/* Right Panel - Code Output */}
-                <motion.div
-                    className="flex-1 p-6"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                    <CodeOutput
-                        code={generatedCode}
-                        language={selectedLanguage}
-                        setLanguage={setSelectedLanguage}
-                        theme={theme}
-                        logicCode={logicCode}
-                        setGeneratedCode={setGeneratedCode}
-                        setCompilationData={setCompilationData}
-                        isCompiling={isCompiling}
-                        setIsCompiling={setIsCompiling}
-                        mode={mode}
-                    />
-                </motion.div>
+                    {/* Right Panel - Code Output */}
+                    <motion.div
+                        className="flex-1 p-6 h-full overflow-hidden"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                    >
+                        <CodeOutput
+                            code={generatedCode}
+                            language={selectedLanguage}
+                            setLanguage={setSelectedLanguage}
+                            theme={theme}
+                            logicCode={logicCode}
+                            setGeneratedCode={setGeneratedCode}
+                            setCompilationData={setCompilationData}
+                            isCompiling={isCompiling}
+                            setIsCompiling={setIsCompiling}
+                            mode={mode}
+                        />
+                    </motion.div>
 
-                {/* History Panel */}
-                {showHistory && (
-                    <HistoryPanel
-                        theme={theme}
-                        onClose={() => setShowHistory(false)}
-                        onSelect={(item) => {
-                            setLogicCode(item.logic)
-                            setGeneratedCode(item.code)
-                            setSelectedLanguage(item.language)
-                        }}
-                    />
+                    {/* History Panel Overlay */}
+                    {showHistory && (
+                        <HistoryPanel
+                            theme={theme}
+                            onClose={() => setShowHistory(false)}
+                            onSelect={(item) => {
+                                setLogicCode(item.logic)
+                                setGeneratedCode(item.code)
+                                setSelectedLanguage(item.language)
+                            }}
+                        />
+                    )}
+                </div>
+
+                {/* Bottom Analysis Panel */}
+                {showAnalysis && compilationData && (
+                    <div className="flex-shrink-0 z-40 relative">
+                        <AnalysisPanel
+                            data={compilationData}
+                            theme={theme}
+                            onClose={() => setShowAnalysis(false)}
+                        />
+                    </div>
                 )}
             </div>
-
-            {/* Bottom Analysis Panel */}
-            {showAnalysis && compilationData && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="fixed bottom-0 left-0 right-0 z-40"
-                >
-                    <AnalysisPanel
-                        data={compilationData}
-                        theme={theme}
-                        onClose={() => setShowAnalysis(false)}
-                    />
-                </motion.div>
-            )}
 
             {/* Floating Action Buttons */}
             <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
