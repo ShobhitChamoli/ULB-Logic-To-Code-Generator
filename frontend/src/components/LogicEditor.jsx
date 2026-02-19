@@ -135,7 +135,6 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
     }
 
     const errors = compilationData?.errors || []
-    console.log('LogicEditor errors:', errors)
     const hasErrors = errors.length > 0
 
     return (
@@ -232,26 +231,7 @@ export default function LogicEditor({ code, setCode, theme, compilationData }) {
                 </motion.div>
             )}
 
-            {/* Syntax Guide */}
-            <div className="p-3 border-t border-gray-200 text-xs text-gray-600 bg-gray-50">
-                <p className="font-medium mb-1 text-gray-700">Supported Syntax:</p>
-                <div className="flex flex-wrap gap-1.5">
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">START/END</code>
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">INPUT</code>
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">SET</code>
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">PRINT</code>
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">IF/ELSE</code>
-                    <code className="px-2 py-0.5 bg-white border border-gray-300 rounded text-blue-600 font-semibold">FOR/WHILE</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">STACK</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">QUEUE</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">MAP</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">SET_DS</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">VECTOR</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">LINKED_LIST</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">TREE</code>
-                    <code className="px-2 py-0.5 bg-white border border-green-300 rounded text-green-600 font-semibold">GRAPH</code>
-                </div>
-            </div>
+
         </div>
     )
 }
