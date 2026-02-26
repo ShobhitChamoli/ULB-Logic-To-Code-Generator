@@ -97,45 +97,58 @@ export default function CodeOutput({
     }
 
     return (
-        <div className="h-full rounded-xl bg-white border border-gray-200 overflow-hidden flex flex-col shadow-lg">
+        <div className="h-full rounded-2xl bg-white/80 backdrop-blur-xl border border-white/50 overflow-hidden flex flex-col shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(56,189,248,0.15)] transition-all duration-500 group relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-100/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
-                <div className="flex items-center gap-2">
-                    <Code2 className="w-5 h-5 text-green-400" />
-                    <h2 className="text-lg font-semibold">Generated Code</h2>
+            <div className="p-4 border-b border-gray-200/50 flex items-center justify-between bg-white/50 backdrop-blur-sm relative z-10">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-sky-400 to-blue-500 rounded-lg shadow-sm">
+                        <Code2 className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                        <h2 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Generated Code</h2>
+                        <p className="text-xs text-gray-500 font-medium">Auto-compiled from logic</p>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                     {/* Language Selector */}
-                    <select
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                        className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm"
-                    >
-                        {LANGUAGES.map(lang => (
-                            <option key={lang.value} value={lang.value}>
-                                {lang.label}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="relative group/select">
+                        <select
+                            value={language}
+                            onChange={(e) => setLanguage(e.target.value)}
+                            className="appearance-none pl-4 pr-10 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 shadow-sm transition-all cursor-pointer"
+                        >
+                            {LANGUAGES.map(lang => (
+                                <option key={lang.value} value={lang.value}>
+                                    {lang.label}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-hover/select:text-sky-500 transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
 
                     {/* Convert Button */}
                     <motion.button
                         onClick={handleConvert}
                         disabled={isCompiling}
-                        className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 to-blue-600 text-white font-medium text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-sky-500/50 transition-all"
-                        whileHover={{ scale: isCompiling ? 1 : 1.05 }}
-                        whileTap={{ scale: isCompiling ? 1 : 0.95 }}
+                        className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-sky-500/30 transition-all border border-transparent hover:border-white/20 relative overflow-hidden group/btn"
+                        whileHover={{ scale: isCompiling ? 1 : 1.02 }}
+                        whileTap={{ scale: isCompiling ? 1 : 0.98 }}
                     >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full duration-1000 transition-transform" />
                         {isCompiling ? (
                             <>
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                Converting...
+                                <span>Converting...</span>
                             </>
                         ) : (
                             <>
-                                <Play className="w-4 h-4" />
-                                Convert
+                                <Play className="w-4 h-4 fill-current" />
+                                <span>Convert Code</span>
                             </>
                         )}
                     </motion.button>
@@ -143,56 +156,64 @@ export default function CodeOutput({
             </div>
 
             {/* Editor */}
-            <div className="flex-1">
+            <div className="flex-1 relative z-10 w-full">
                 <Editor
                     height="100%"
+                    width="100%"
                     language={language}
-                    value={code}
+                    value={code || '// Click "Convert Code" to generate your program here...'}
                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     options={{
                         readOnly: true,
                         minimap: { enabled: false },
                         fontSize: 14,
+                        fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                         lineNumbers: 'on',
                         scrollBeyondLastLine: false,
                         automaticLayout: true,
+                        padding: { top: 16, bottom: 16 },
+                        smoothScrolling: true,
+                        cursorBlinking: 'smooth',
+                        renderWhitespace: 'none',
                     }}
                 />
             </div>
 
             {/* Action Buttons */}
-            <div className="p-3 border-t border-gray-200 flex items-center justify-end gap-2 bg-gray-50">
+            <div className="p-3 border-t border-gray-200/50 flex items-center justify-end gap-3 bg-white/50 backdrop-blur-sm relative z-10">
                 <motion.button
                     onClick={handleCopy}
                     disabled={!code}
-                    className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-gray-50 text-gray-700"
-                    whileHover={{ scale: code ? 1.05 : 1 }}
-                    whileTap={{ scale: code ? 0.95 : 1 }}
+                    className="px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow hover:border-gray-300 text-gray-700 transition-all"
+                    whileHover={{ scale: code ? 1.02 : 1 }}
+                    whileTap={{ scale: code ? 0.98 : 1 }}
                 >
-                    <Copy className="w-4 h-4" />
-                    {copySuccess ? 'Copied!' : 'Copy'}
+                    <Copy className={`w-4 h-4 ${copySuccess ? 'text-green-500' : 'text-gray-500'}`} />
+                    <span className={copySuccess ? 'text-green-600' : ''}>{copySuccess ? 'Copied!' : 'Copy'}</span>
                 </motion.button>
 
                 <motion.button
                     onClick={handleDownload}
                     disabled={!code}
-                    className="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-gray-50 text-gray-700"
-                    whileHover={{ scale: code ? 1.05 : 1 }}
-                    whileTap={{ scale: code ? 0.95 : 1 }}
+                    className="px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow hover:border-gray-300 text-gray-700 transition-all"
+                    whileHover={{ scale: code ? 1.02 : 1 }}
+                    whileTap={{ scale: code ? 0.98 : 1 }}
                 >
-                    <Download className="w-4 h-4" />
-                    Download
+                    <Download className="w-4 h-4 text-sky-500" />
+                    <span>Download</span>
                 </motion.button>
+
+                <div className="w-px h-6 bg-gray-200 mx-1"></div>
 
                 <motion.button
                     onClick={handleClear}
                     disabled={!code}
-                    className="px-3 py-1.5 rounded-lg bg-white border border-red-300 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:bg-red-50 text-red-600"
-                    whileHover={{ scale: code ? 1.05 : 1 }}
-                    whileTap={{ scale: code ? 0.95 : 1 }}
+                    className="px-4 py-2 rounded-xl bg-white border border-red-100 text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow hover:bg-red-50 hover:border-red-200 text-red-600 transition-all group/clear"
+                    whileHover={{ scale: code ? 1.02 : 1 }}
+                    whileTap={{ scale: code ? 0.98 : 1 }}
                 >
-                    <Trash2 className="w-4 h-4" />
-                    Clear
+                    <Trash2 className="w-4 h-4 group-hover/clear:text-red-500 transition-colors" />
+                    <span>Clear</span>
                 </motion.button>
             </div>
         </div>
